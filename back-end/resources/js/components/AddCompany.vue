@@ -7,21 +7,21 @@
                     <div class="row">
                     <div class="form-group col-md-6">
                         <label>Name</label>
-                        <input type="text" class="form-control" v-model="company.name">
+                        <input type="text" class="form-control" v-model="formData.name">
                     </div>
                     <div class="form-group  col-md-6">
                         <label>Email</label>
-                        <input type="text" class="form-control" v-model="company.email">
+                        <input type="text" class="form-control" v-model="formData.email">
                     </div>
                     </div>
                     <div class="row">
                     <div class="form-group col-md-6">
                         <label>Website</label>
-                        <input type="text" class="form-control" v-model="company.website">
+                        <input type="text" class="form-control" v-model="formData.website">
                     </div>
                     <div class="form-group col-md-6">
                         <label>Logo</label>
-                        <input type="file" name='logo' @change="onFileChange" class="form-control" >
+                        <input type="file" ref="file" @change="onFileChange" class="form-control" >
                     </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Add company</button>
@@ -32,38 +32,46 @@
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
     data() {
         return {
-            company: {}
+            company: {},
+            formData: {
+                name: null,
+                email: null,
+                website: null
+            },
+            logo: null,
+            logoName: null,
         }
     },
     methods: {
         onFileChange(e) {
-            const file = e.target.files[0];
-            // this.url = URL.createObjectURL(file);
-            this.selected_cover = file;
-            console.log('file:',file,'cover:',this.selected_cover);
+            this.logo = this.$refs.file.files[0]
+            this.logoName = this.logo.name
+            console.log('logo:',this.logo,'logoName:',this.logoName);
         },
         addCompany() {
-            console.log(this.company);
-            const formdata = new FormData();
-            formdata.append('image', this.selected_cover)
-            formdata.append('name', this.company.name)
-            formdata.append('website', this.company.website)
-            formdata.append('cover', URL.createObjectURL(this.selected_cover))
-            formdata.append('email', this.company.email)
-            console.log(formdata);
-            // this.$axios.get('/sanctum/csrf-cookie').then(response => {
-            //     this.$axios.post('/api/company/', this.company)
-            //         .then(response => {
-            //             console.log(response);
-            //             this.$router.push({name: 'Company'})
-            //         })
-            //         .catch(function (error) {
-            //             console.error(error);
-            //         });
-            // })
+            // console.log(this.company);
+            let formData = new FormData()
+            _.each(this.formData, (value, key) => {
+                formData.append(key, value)
+            })
+            formData.append('logo', this.logo)
+            console.log(formData);
+            this.$axios.get('/sanctum/csrf-cookie').then(response => {
+                this.$axios.post('/api/company/', formData,
+                { headers: {
+                    'Content-Type': "multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2)
+                }}).then(response => {
+                        console.log(response);
+                        this.$router.push({name: 'Company'})
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            })
         }
     },
     beforeRouteEnter(to, from, next) {

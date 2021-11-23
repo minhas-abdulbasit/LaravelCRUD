@@ -17,7 +17,7 @@
             <tbody>
             <tr v-for="company in companies" :key="company.id">
                 <td>{{ company.id }}</td>
-                <td>{{ company.logo }}</td>
+                <td><img :src="'storage/'+company.logo" /></td>
                 <td>{{ company.name }}</td>
                 <td>{{ company.website }}</td>
                 <td>{{ company.email }}</td>
@@ -47,8 +47,8 @@ export default {
         this.$axios.get('/sanctum/csrf-cookie').then(response => {
             this.$axios.get('/api/company')
                 .then(response => {
-                    console.log(response.data.data);
-                    this.companies = response.data.data;
+                    console.log(response.data);
+                    this.companies = response.data;
                 })
                 .catch(function (error) {
                     console.error(error);

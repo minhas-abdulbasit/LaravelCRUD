@@ -19544,37 +19544,55 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      company: {}
+      company: {},
+      formData: {
+        name: null,
+        email: null,
+        website: null
+      },
+      logo: null,
+      logoName: null
     };
   },
   methods: {
     onFileChange: function onFileChange(e) {
-      var file = e.target.files[0]; // this.url = URL.createObjectURL(file);
-
-      this.selected_cover = file;
-      console.log('file:', file, 'cover:', this.selected_cover);
+      this.logo = this.$refs.file.files[0];
+      this.logoName = this.logo.name;
+      console.log('logo:', this.logo, 'logoName:', this.logoName);
     },
     addCompany: function addCompany() {
-      console.log(this.company);
-      var formdata = new FormData();
-      formdata.append('image', this.selected_cover);
-      formdata.append('name', this.company.name);
-      formdata.append('website', this.company.website);
-      formdata.append('cover', URL.createObjectURL(this.selected_cover));
-      formdata.append('email', this.company.email);
-      console.log(formdata); // this.$axios.get('/sanctum/csrf-cookie').then(response => {
-      //     this.$axios.post('/api/company/', this.company)
-      //         .then(response => {
-      //             console.log(response);
-      //             this.$router.push({name: 'Company'})
-      //         })
-      //         .catch(function (error) {
-      //             console.error(error);
-      //         });
-      // })
+      var _this = this;
+
+      // console.log(this.company);
+      var formData = new FormData();
+
+      lodash__WEBPACK_IMPORTED_MODULE_0___default().each(this.formData, function (value, key) {
+        formData.append(key, value);
+      });
+
+      formData.append('logo', this.logo);
+      console.log(formData);
+      this.$axios.get('/sanctum/csrf-cookie').then(function (response) {
+        _this.$axios.post('/api/company/', formData, {
+          headers: {
+            'Content-Type': "multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2)
+          }
+        }).then(function (response) {
+          console.log(response);
+
+          _this.$router.push({
+            name: 'Company'
+          });
+        })["catch"](function (error) {
+          console.error(error);
+        });
+      });
     }
   },
   beforeRouteEnter: function beforeRouteEnter(to, from, next) {
@@ -19656,8 +19674,8 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$axios.get('/sanctum/csrf-cookie').then(function (response) {
       _this.$axios.get('/api/company').then(function (response) {
-        console.log(response.data.data);
-        _this.companies = response.data.data;
+        console.log(response.data);
+        _this.companies = response.data;
       })["catch"](function (error) {
         console.error(error);
       });
@@ -20148,35 +20166,35 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "text",
     "class": "form-control",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.company.name = $event;
+      return $data.formData.name = $event;
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.company.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formData.name]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "form-control",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-      return $data.company.email = $event;
+      return $data.formData.email = $event;
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.company.email]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formData.email]])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [_hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "class": "form-control",
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return $data.company.website = $event;
+      return $data.formData.website = $event;
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.company.website]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.formData.website]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "file",
-    name: "logo",
+    ref: "file",
     onChange: _cache[3] || (_cache[3] = function () {
       return $options.onFileChange && $options.onFileChange.apply($options, arguments);
     }),
     "class": "form-control"
-  }, null, 32
-  /* HYDRATE_EVENTS */
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
   )])]), _hoisted_14], 32
   /* HYDRATE_EVENTS */
   )])])]);
@@ -20347,14 +20365,15 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_5 = {
+var _hoisted_5 = ["src"];
+var _hoisted_6 = {
   "class": "btn-group",
   role: "group"
 };
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Edit ");
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Edit ");
 
-var _hoisted_7 = ["onClick"];
+var _hoisted_8 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _this = this;
 
@@ -20373,9 +20392,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: company.id
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(company.id), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(company.logo), 1
-    /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(company.name), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+      src: 'storage/' + company.logo
+    }, null, 8
+    /* PROPS */
+    , _hoisted_5)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(company.name), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(company.website), 1
     /* TEXT */
@@ -20383,7 +20404,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(company.created_at), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
       to: {
         name: 'editcompany',
         params: {
@@ -20393,7 +20414,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "class": "btn btn-primary"
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [_hoisted_6];
+        return [_hoisted_7];
       }),
       _: 2
       /* DYNAMIC */
@@ -20407,7 +20428,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, "Delete", 8
     /* PROPS */
-    , _hoisted_7)])])]);
+    , _hoisted_8)])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {

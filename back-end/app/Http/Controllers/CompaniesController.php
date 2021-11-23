@@ -17,7 +17,7 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        $comp_rec = Companies::paginate(10);
+        $comp_rec = Companies::orderBy('id', 'desc')->get();
         return response()->json($comp_rec);
     }
 
@@ -42,6 +42,7 @@ class CompaniesController extends Controller
         try {
             // $input = collect($request->all())->filter()->all();
             $valid = [
+                'logo'=> ['image', 'dimensions:max_width=10000,max_height=10000'],
                 'name'=>'required',
                 'email'=>'required',
                 'email' => 'unique:companies,email'
@@ -54,10 +55,20 @@ class CompaniesController extends Controller
                 return response()->json(['errors'=>$validator->errors()],422);
             }
 
+            $file = $request->file('logo');
+            // if($request->file('logo'))
+            // {
+            //     return response()->json('yes');
+            // }
+            // return response()->json('no');
+            //return response()->json($file->extension());
+            $name = '/logo/' . uniqid() . '.' . $file->extension();
+            $file->storePubliclyAs('public', $name);
+            $logo = $name;
             $company = new Companies();
             $company->name = $request->name;
             $company->email = $request->email ?? null;
-            $company->logo = $request->logo ?? null;
+            $company->logo = $logo ?? null;
             $company->website = $request->website ?? null;
             $company->save();
             return response()->json(['msg'=>'Company added successfully!'],200);
