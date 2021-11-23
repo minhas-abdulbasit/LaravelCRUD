@@ -69,6 +69,8 @@ export default {
                         this.$router.push({name: 'Company'})
                     })
                     .catch(function (error) {
+                        console.log('here');
+                        alert('something went wrong!');
                         console.error(error);
                     });
             })

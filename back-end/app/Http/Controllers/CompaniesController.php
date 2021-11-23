@@ -42,7 +42,7 @@ class CompaniesController extends Controller
         try {
             // $input = collect($request->all())->filter()->all();
             $valid = [
-                'logo'=> ['image', 'dimensions:max_width=10000,max_height=10000'],
+                'logo'=> ['image', 'dimensions:max_width=100,max_height=100'],
                 'name'=>'required',
                 'email'=>'required',
                 'email' => 'unique:companies,email'

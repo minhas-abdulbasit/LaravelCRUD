@@ -19590,6 +19590,8 @@ __webpack_require__.r(__webpack_exports__);
             name: 'Company'
           });
         })["catch"](function (error) {
+          console.log('here');
+          alert('something went wrong!');
           console.error(error);
         });
       });
