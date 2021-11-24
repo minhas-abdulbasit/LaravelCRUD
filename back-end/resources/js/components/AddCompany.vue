@@ -24,7 +24,7 @@
                         <input type="file" ref="file" @change="onFileChange" class="form-control" >
                     </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add company</button>
+                    <button type="submit" :disabled="submitDisabled" class="btn btn-primary">{{button}}</button>
                 </form>
             </div>
         </div>
@@ -44,6 +44,8 @@ export default {
             },
             logo: null,
             logoName: null,
+            submitDisabled: false,
+            button: 'Add Company'
         }
     },
     methods: {
@@ -60,6 +62,8 @@ export default {
             })
             formData.append('logo', this.logo)
             console.log(formData);
+            this.submitDisabled = true;
+            this.button = 'Processing...';
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
                 this.$axios.post('/api/company/', formData,
                 { headers: {

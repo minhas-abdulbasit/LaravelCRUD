@@ -19557,7 +19557,9 @@ __webpack_require__.r(__webpack_exports__);
         website: null
       },
       logo: null,
-      logoName: null
+      logoName: null,
+      submitDisabled: false,
+      button: 'Add Company'
     };
   },
   methods: {
@@ -19578,6 +19580,8 @@ __webpack_require__.r(__webpack_exports__);
 
       formData.append('logo', this.logo);
       console.log(formData);
+      this.submitDisabled = true;
+      this.button = 'Processing...';
       this.$axios.get('/sanctum/csrf-cookie').then(function (response) {
         _this.$axios.post('/api/company/', formData, {
           headers: {
@@ -20152,13 +20156,7 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-  type: "submit",
-  "class": "btn btn-primary"
-}, "Add company", -1
-/* HOISTED */
-);
-
+var _hoisted_14 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
@@ -20197,7 +20195,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "form-control"
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  )])]), _hoisted_14], 32
+  )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    type: "submit",
+    disabled: $data.submitDisabled,
+    "class": "btn btn-primary"
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.button), 9
+  /* TEXT, PROPS */
+  , _hoisted_14)], 32
   /* HYDRATE_EVENTS */
   )])])]);
 }

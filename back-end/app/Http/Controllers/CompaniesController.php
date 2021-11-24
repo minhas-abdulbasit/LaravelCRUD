@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Redirect;
 use Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomCompany;
+
 
 class CompaniesController extends Controller
 {
@@ -42,7 +45,7 @@ class CompaniesController extends Controller
         try {
             // $input = collect($request->all())->filter()->all();
             $valid = [
-                'logo'=> ['image', 'dimensions:max_width=100,max_height=100'],
+                //'logo'=> ['image', 'dimensions:max_width=1000,max_height=1000'],
                 'name'=>'required',
                 'email'=>'required',
                 'email' => 'unique:companies,email'
@@ -54,7 +57,15 @@ class CompaniesController extends Controller
             {
                 return response()->json(['errors'=>$validator->errors()],422);
             }
-
+            $logo='';
+            if($request->file('logo')){
+                $valid = [
+                  'logo'=> ['image', 'dimensions:max_width=1000,max_height=1000']
+                ];
+                if($validator->fails())
+                {
+                    return response()->json(['errors'=>$validator->errors()],422);
+                }
             $file = $request->file('logo');
             // if($request->file('logo'))
             // {
@@ -65,12 +76,21 @@ class CompaniesController extends Controller
             $name = '/logo/' . uniqid() . '.' . $file->extension();
             $file->storePubliclyAs('public', $name);
             $logo = $name;
+            }
             $company = new Companies();
             $company->name = $request->name;
             $company->email = $request->email ?? null;
             $company->logo = $logo ?? null;
             $company->website = $request->website ?? null;
             $company->save();
+
+            $details = [
+                'title' => 'Mail from Abdul Basit Minhas Laravel Assessment',
+                'body' => 'Welcome partner! Your company added successfully,now loggin and check out the admin panel.'
+            ];
+           
+            Mail::to($request->email)->send(new WelcomCompany($details));
+           
             return response()->json(['msg'=>'Company added successfully!'],200);
 
         } catch (Exception $ex) {
